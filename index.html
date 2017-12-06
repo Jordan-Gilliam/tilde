@@ -11,7 +11,6 @@
       ['Work', 'GitHub', 'g', 'https://github.com', '/search?q={}', '#333'],
       ['Work', 'Inbox', 'I', 'https://inbox.google.com', '/search/{}', '#4285f4'],
       ['Work', 'Keep', 'k', 'https://keep.google.com', '/#search/text={}', '#fb0'],
-      ['Look', 'Codrops', 'C', 'https://tympanus.net/codrops', '?search-type=posts&s={}', '#0099cc'],
       ['Look', 'Hunt', 'H', 'https://www.producthunt.com', '/search?q={}', '#da552f'],
       ['Look', 'Photos', 'P', 'https://photos.google.com', '/search/{}', '#34a853'],
       ['Look', 'Unsplash', 'u', 'https://unsplash.com/new', '/search/{}', '#000'],
@@ -27,10 +26,6 @@
       ['Watch', 'Netflix', 'n', 'https://www.netflix.com/browse', '/search?q={}', '#e50914'],
       ['Watch', 'Twitch', 'T', 'https://www.twitch.tv/directory/following', null, '#6441a5'],
       ['Watch', 'YouTube', 'y', 'https://youtube.com/feed/subscriptions', '/results?search_query={}', '#cd201f'],
-      ['Download', '7digital', '7', 'https://us.7digital.com', '/search?q={}', '#07606e'],
-      ['Download', 'Sky Torrents', 'S', 'https://skytorrents.in', '/search/all/ed/1?q={}', '#00d1b2'],
-      ['Download', 'Pirate Bay', 'b', 'https://thepiratebay.org', '/search/{}', '#4c4132'],
-      ['Download', 'YTS', 'Y', 'https://yts.gs/browse-movies/all/1080p/all/7/latest', '/browse-movies/{}', '#2f2f2f'],
     ],
 
     // give suggestions as you type
@@ -51,7 +46,7 @@
 
     // default search suggestions for the specified queries
     defaultSuggestions: {
-      'g': ['g/issues', 'g/pulls', 'gist.github.com', 'g/cadejscroggins', 'g/cadejscroggins/tilde'],
+      'g': ['g/issues', 'g/pulls', 'gist.github.com', 'g/Jordan-Gilliam'],
       'l': ['l:electronic', 'l:chill', 'l:focus', 'l:sleep', 'l:ambient'],
       'r': ['r/r/unixporn', 'r/r/startpages', 'r/r/webdev', 'r/r/technology', 'r/r/portland'],
       's': ['s/you/likes', 's/discover/the-upload'],
@@ -384,19 +379,32 @@
       const shift = e.shiftKey;
 
       switch (e.which) {
-        case 8: return 'backspace';
-        case 9: return shift ? 's-tab' : 'tab';
-        case 13: return 'enter';
-        case 16: return 'shift';
-        case 17: return 'ctrl';
-        case 18: return 'alt';
-        case 27: return 'escape';
-        case 38: return 'up';
-        case 40: return 'down';
-        case 46: return 'delete';
-        case 78: return ctrl ? 'c-n' : 'n';
-        case 80: return ctrl ? 'c-p' : 'n';
-        case 91: return 'super';
+        case 8:
+          return 'backspace';
+        case 9:
+          return shift ? 's-tab' : 'tab';
+        case 13:
+          return 'enter';
+        case 16:
+          return 'shift';
+        case 17:
+          return 'ctrl';
+        case 18:
+          return 'alt';
+        case 27:
+          return 'escape';
+        case 38:
+          return 'up';
+        case 40:
+          return 'down';
+        case 46:
+          return 'delete';
+        case 78:
+          return ctrl ? 'c-n' : 'n';
+        case 80:
+          return ctrl ? 'c-p' : 'n';
+        case 91:
+          return 'super';
       }
     },
   };
@@ -795,7 +803,8 @@
       if (query.match(this._urlRegex)) {
         const hasProtocol = query.match(this._protocolRegex);
         res.redirect = hasProtocol ? query : 'http://' + query;
-      } else {
+      }
+      else {
         const splitSearch = query.split(this._searchDelimiter);
         const splitPath = query.split(this._pathDelimiter);
 
@@ -811,11 +820,13 @@
               res.split = this._searchDelimiter;
               res.query = this._shiftAndTrim(splitSearch, res.split);
               res.redirect = this._prepSearch(url, searchPath, res.query);
-            } else if (res.isPath) {
+            }
+            else if (res.isPath) {
               res.split = this._pathDelimiter;
               res.path = this._shiftAndTrim(splitPath, res.split);
               res.redirect = this._prepPath(url, res.path);
-            } else {
+            }
+            else {
               res.redirect = url;
             }
 
@@ -922,8 +933,11 @@
         case 'ctrl':
         case 'enter':
         case 'shift':
-        case 'super': return;
-        case 'escape': this.hide(); return;
+        case 'super':
+          return;
+        case 'escape':
+          this.hide();
+          return;
       }
 
       this.show();
@@ -935,7 +949,7 @@
       const { isKey } = this._queryParser.parse(newQuery);
       this._inputElVal = newQuery;
       this._setBackgroundFromQuery(newQuery);
-      if (!newQuery || isHelp ) this.hide();
+      if (!newQuery || isHelp) this.hide();
       if (isHelp) this._help.toggle();
       if (this._instantRedirect && isKey) this._submitWithValue(newQuery);
       if (this._suggester) this._suggester.suggest(newQuery);
